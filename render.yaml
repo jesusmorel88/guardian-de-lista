@@ -1,0 +1,30 @@
+# Render Blueprint para M3U Guardian Shield
+
+# Este archivo define la configuración para desplegar en Render
+# Render automaticamente creara los servicios definidos aqui
+
+services:
+  # Servicio de base de datos PostgreSQL (Neon)
+  # Descomenta esto si quieres que Render cree la base de datos
+  # NOTA: Neon es un servicio separado,，你需要 crear tu base de datos en Neon primero
+
+  # Servicio web (Backend + Frontend)
+  - type: web
+    name: m3u-guardian-shield
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_PIN
+        value: "198823"
+      - key: DATABASE_URL
+        # IMPORTANTE: Configura esta variable en el dashboard de Render
+        # Debes obtenerla de tu proyecto en Neon
+        sync: false
+    autoDeploy: true
+
+# Configuración de buildpack
+buildpacks:
+  - https://github.com/render-examples/create-react-app.git
